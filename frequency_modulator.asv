@@ -1,0 +1,27 @@
+function signal=frequency_modulator(A,carfunc,wc,vm,msgfcn,wm,beta,simtime,type)
+if type==0
+if msgfcn=='sin'
+    int_msg='cos';
+else
+    int_msg='-sin';
+end;
+z=[];
+for i=1:length(simtime)
+sigfcn=[A '*' carfunc '(' wc '*' num2str(simtime(i)) '+' num2str(beta) '*(' int_msg '(' wm '*' num2str(simtime(i)) ')-' int_msg '(' num2str(0) ')))'];
+z(i)=str2num(sigfcn);
+end;
+signal=z;
+return;
+else
+    z=[];
+    for i=1:length(simtime)
+        z(i)=0;
+        for n=-20:20
+            sigfcn=[A '*' carfunc '(' wc '*' num2str(simtime(i)) '+' num2str(beta) '*(' int_msg '(' wm '*' num2str(simtime(i)) ')-' int_msg '(' num2str(0) ')))'];
+            z(i)=z(i)+str2num(sigfcn);
+        end;
+    end;
+signal=z;
+return;
+end;
+end
